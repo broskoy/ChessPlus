@@ -1,6 +1,7 @@
 package all;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
@@ -8,16 +9,19 @@ public class GamePanel extends JPanel implements Runnable{
     // allocate a thread to run 
     Thread gameThread;
 
-    //
-    final static int FPS = 20;
+    // the fps at which the game is rendered
+    final static int FPS = 60;
 
+    Board board;
+
+    // constructor
     public GamePanel() {
         //panel settings
-        this.setSize(Frame.WIDTH, Frame.HEIGHT);
-        this.setBackground(new Color(20, 0, 20));
+        //this.setSize(Frame.WIDTH, Frame.HEIGHT);
+        this.setBackground(Color.orange);
         this.setLocation(0, 0);
         // this.addKeyListener(keyHandler);
-        this.setLayout(null);
+        //this.setLayout(null);
         this.setFocusable(true);
         this.setDoubleBuffered(true);
         this.setVisible(true);
@@ -25,6 +29,9 @@ public class GamePanel extends JPanel implements Runnable{
         // start the thread
         gameThread = new Thread(this);
         gameThread.start();
+
+        // initialize the board
+        board = new Board();
     }
 
     @Override
@@ -58,6 +65,14 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     private void update() {
+        
+    }
 
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        board.draw(g);
+
+        g.dispose();
     }
 }
