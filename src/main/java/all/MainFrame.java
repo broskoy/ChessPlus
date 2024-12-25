@@ -5,14 +5,19 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-public class Frame extends JFrame{
-    
+
+public class MainFrame extends JFrame{
+
     final static int HEIGHT = 640;
     final static int WIDTH = 1080;
     GamePanel gamePanel;
     SidePanel sidePanel;
 
-    public Frame() {
+    public static void main(String[] args) {
+        new MainFrame();
+    }
+
+    public MainFrame() {
         addGamePanel();
         addSidePanel();
 
