@@ -1,3 +1,5 @@
-all\MainFrame.class
 all\Piece.class
+all\Board$PColor.class
+all\MainFrame.class
+all\Board$PType.class
 all\Board.class

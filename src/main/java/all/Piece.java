@@ -1,13 +1,16 @@
 package all;
 
+import all.Board.PColor;
+import all.Board.PType;
+
 public class Piece {
 
     int row; 
     int col;
-    int type;
-    int color;
+    PType type;
+    PColor color;
 
-    public Piece(int row, int col, int type, int color) {
+    public Piece(int row, int col, PType type, PColor color) {
         this.row = row;
         this.col = col;
         this.type = type;
