@@ -9,12 +9,21 @@ public class Piece {
     int col;
     PType type;
     PColor color;
+    // BufferedImage image;
 
     public Piece(int row, int col, PType type, PColor color) {
         this.row = row;
         this.col = col;
         this.type = type;
         this.color = color;
+
+        // try {
+        //     image = switch (type) {
+        //         default -> ImageIO.read(new File("/pawn_white.jpg"));
+        //     };
+        // } catch (IOException exception){
+        //     // handle
+        // }
     }
 
     private boolean validate_move(int row, int col) {

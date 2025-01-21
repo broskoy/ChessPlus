@@ -6,9 +6,14 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 public class Board {
-    // constants for the size of the chess board
-    public static final int BOARDHEIGHT = 8;
-    public static final int BOARDWIDTH = 8;
+
+    // constant for the size of the chess board
+    public static final int BOARDTILES = 8;
+
+    // size of tiles that is also used for the border
+    int tileSize = MainFrame.HEIGHT / (BOARDTILES + 2);
+
+    // where the pieces will be stored
     ArrayList<Piece> board = new ArrayList<>();
 
     enum PType {
@@ -37,15 +42,18 @@ public class Board {
 
         // draw horizontal lines
         for (int i=0; i<9; i++)
-            g2d.drawLine(100, 100 + i*50, 500, 100 + i*50);
+            g2d.drawLine(tileSize, tileSize + i*tileSize, MainFrame.HEIGHT - tileSize, tileSize + i*tileSize);
 
         // draw vertical lines
         for (int i=0; i<9; i++)
-            g2d.drawLine(100 + i*50, 100, 100 + i*50, 500);
+            g2d.drawLine(tileSize + i*tileSize, tileSize, tileSize + i*tileSize, MainFrame.HEIGHT - tileSize);
+
+        // for (Piece piece : board) 
+        //     piece.drawPiece(g, tileSize);
     }
 
     // spawns a piece
-    public void spawn(int row, int col, PType type, PColor player) {
+    private void spawn(int row, int col, PType type, PColor player) {
         board.add(new Piece(row, col, type, player));
     }
 

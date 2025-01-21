@@ -21,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.setBackground(new Color(48, 46, 43));
         this.setLocation(0, 0);
         // this.addKeyListener(keyHandler);
-        //this.setLayout(null);
+        // this.setLayout(null);
         this.setFocusable(true);
         this.setDoubleBuffered(true);
         this.setVisible(true);
@@ -68,6 +68,7 @@ public class GamePanel extends JPanel implements Runnable{
         
     }
 
+    @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
