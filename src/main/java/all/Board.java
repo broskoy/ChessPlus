@@ -42,14 +42,21 @@ public class Board {
 
         // draw horizontal lines
         for (int i=0; i<9; i++)
-            g2d.drawLine(tileSize, tileSize + i*tileSize, MainFrame.HEIGHT - tileSize, tileSize + i*tileSize);
+            g2d.drawLine(tileSize, (1 + i) * tileSize, MainFrame.HEIGHT - tileSize, (1 + i) * tileSize);
 
         // draw vertical lines
         for (int i=0; i<9; i++)
-            g2d.drawLine(tileSize + i*tileSize, tileSize, tileSize + i*tileSize, MainFrame.HEIGHT - tileSize);
+            g2d.drawLine((1 + i) * tileSize, tileSize, (1 + i) * tileSize, MainFrame.HEIGHT - tileSize);
 
-        // for (Piece piece : board) 
-        //     piece.drawPiece(g, tileSize);
+        // g2d.setColor(Color.blue);
+
+        for (Piece piece : board) {
+            int imageX = (int) ((1.05 + piece.col) * tileSize);
+            int imageY = (int) ((1.05 + piece.row) * tileSize);
+            int resizeX = (int) (0.9*tileSize);
+            int resizeY = (int) (0.9*tileSize);
+            g2d.drawImage(piece.image, imageX, imageY, resizeX, resizeY, null);
+        }
     }
 
     // spawns a piece
