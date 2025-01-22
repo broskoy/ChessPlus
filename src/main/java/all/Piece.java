@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import all.Board.PColor;
-import all.Board.PType;
+import all.GamePanel.PColor;
+import all.GamePanel.PType;
 
 public class Piece {
 
@@ -21,22 +21,37 @@ public class Piece {
         this.col = col;
         this.type = type;
         this.color = color;
+        fetchImage();
+    }
 
+    private void fetchImage() {
+        
         try {
-            image = switch (type) {
-                case pawn -> ImageIO.read(Piece.class.getResourceAsStream("/pawn_white.jpg"));
-                case horse -> ImageIO.read(Piece.class.getResourceAsStream("/horse_white.jpg"));
-                case bishop -> ImageIO.read(Piece.class.getResourceAsStream("/bishop_white.jpg"));
-                case rook -> ImageIO.read(Piece.class.getResourceAsStream("/rook_white.jpg"));
-                case queen -> ImageIO.read(Piece.class.getResourceAsStream("/queen_white.jpg"));
-                case king -> ImageIO.read(Piece.class.getResourceAsStream("/king_white.jpg"));
-                default -> ImageIO.read(Piece.class.getResourceAsStream("/pawn_white.jpg"));
-            };
+            if (color == PColor.white) {
+                image = switch (type) {
+                    case pawn -> ImageIO.read(Piece.class.getResourceAsStream("/pawn_white.jpg"));
+                    case horse -> ImageIO.read(Piece.class.getResourceAsStream("/horse_white.jpg"));
+                    case bishop -> ImageIO.read(Piece.class.getResourceAsStream("/bishop_white.jpg"));
+                    case rook -> ImageIO.read(Piece.class.getResourceAsStream("/rook_white.jpg"));
+                    case queen -> ImageIO.read(Piece.class.getResourceAsStream("/queen_white.jpg"));
+                    case king -> ImageIO.read(Piece.class.getResourceAsStream("/king_white.jpg"));
+                    default -> ImageIO.read(Piece.class.getResourceAsStream("/pawn_white.jpg"));
+                };
+            }
+            else {
+                image = switch (type) {
+                    case pawn -> ImageIO.read(Piece.class.getResourceAsStream("/pawn_black.jpg"));
+                    case horse -> ImageIO.read(Piece.class.getResourceAsStream("/horse_black.jpg"));
+                    case bishop -> ImageIO.read(Piece.class.getResourceAsStream("/bishop_black.jpg"));
+                    case rook -> ImageIO.read(Piece.class.getResourceAsStream("/rook_black.jpg"));
+                    case queen -> ImageIO.read(Piece.class.getResourceAsStream("/queen_black.jpg"));
+                    case king -> ImageIO.read(Piece.class.getResourceAsStream("/king_black.jpg"));
+                    default -> ImageIO.read(Piece.class.getResourceAsStream("/pawn_black.jpg"));
+                };
+            }
         } catch (IOException exception){
             // handle
         }
-
-        //image = image.getScaledInstance(10, 10, Image.SCALE_DEFAULT);
     }
 
     private boolean validate_move(int row, int col) {

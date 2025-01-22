@@ -1,6 +1,6 @@
 all\Piece.class
-all\Board$PColor.class
+all\GamePanel$PType.class
 all\MainFrame.class
 all\Piece$1.class
-all\Board$PType.class
+all\GamePanel$PColor.class
 all\Board.class
