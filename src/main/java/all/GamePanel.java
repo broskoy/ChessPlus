@@ -87,20 +87,24 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+    // handles the logic of the game
     private void update() {
         
     }
 
+    // handles what is painted each frame
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
         drawBoard(g);
+        drawPieces(g);
+        drawText(g);
 
         g.dispose();
     }
 
-    public void drawBoard(Graphics g) {
+    private void drawBoard(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setColor(Color.gray);
@@ -112,8 +116,10 @@ public class GamePanel extends JPanel implements Runnable{
         // draw vertical lines
         for (int i=0; i<9; i++)
             g2d.drawLine((1 + i) * tileSize, tileSize, (1 + i) * tileSize, MainFrame.HEIGHT - tileSize);
+    }
 
-        // g2d.setColor(Color.blue);
+    private void drawPieces(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
 
         for (Piece piece : board) {
             int imageX = (int) ((1.05 + piece.col) * tileSize);
@@ -122,6 +128,13 @@ public class GamePanel extends JPanel implements Runnable{
             int resizeY = (int) (0.9*tileSize);
             g2d.drawImage(piece.image, imageX, imageY, resizeX, resizeY, null);
         }
+    }
+
+    private void drawText(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.drawString("Bozo", tileSize, tileSize / 2);
+        g2d.drawString("Bozo", tileSize, (1 + BOARDTILES) * tileSize + tileSize / 2);
     }
 
     // spawns a piece
