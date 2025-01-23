@@ -55,7 +55,7 @@ public class Piece {
     }
 
     private boolean validate_move(int row, int col) {
-        return true;
+        return (row < col);
     }
 
     // if th emove is valid, it moves the piece

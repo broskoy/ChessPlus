@@ -1,27 +1,35 @@
 package all;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable{
+public class GamePanel extends JPanel implements Runnable, MouseListener {
+
+    // the fps at which the game is rendered
+    final static int FPS = 10;
+
+    // constant for the size of the chess board
+    public static final int BOARDSIZE = 8;
+
+    // size of tiles that is also used for the border
+    int tileSize = MainFrame.HEIGHT / (BOARDSIZE + 2);
+
+    // where the pieces will be stored
+    ArrayList<Piece> pieces = new ArrayList<>();
+
     // allocate a thread to run 
     Thread gameThread;
 
-    // the fps at which the game is rendered
-    final static int FPS = 60;
-
-    // constant for the size of the chess board
-    public static final int BOARDTILES = 8;
-
-    // size of tiles that is also used for the border
-    int tileSize = MainFrame.HEIGHT / (BOARDTILES + 2);
-
-    // where the pieces will be stored
-    ArrayList<Piece> board = new ArrayList<>();
+    int selectedTileX;
+    int selectedTileY;
 
     enum PType {
         king,
@@ -43,18 +51,18 @@ public class GamePanel extends JPanel implements Runnable{
         this.setSize(MainFrame.HEIGHT, MainFrame.HEIGHT);
         this.setBackground(new Color(48, 46, 43));
         this.setLocation(0, 0);
-        // this.addKeyListener(keyHandler);
-        // this.setLayout(null);
+        this.setLayout(null);
         this.setFocusable(true);
         this.setDoubleBuffered(true);
         this.setVisible(true);
-        
-        // start the thread
-        gameThread = new Thread(this);
-        gameThread.start();
+        addMouseListener(this);
 
         // initialize the board
         spawnDefault();
+
+        // start the thread
+        gameThread = new Thread(this);
+        gameThread.start();  
     }
 
     @Override
@@ -96,16 +104,19 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
-        drawBoard(g);
-        drawPieces(g);
-        drawText(g);
-
-        g.dispose();
-    }
-
-    private void drawBoard(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+
+        drawBoard(g2d);
+        selectTile(g2d);
+        drawPieces(g2d);
+        drawText(g2d);
+
+        g2d.dispose();
+    }
+    
+
+    // draws the lines bounding the tiles
+    private void drawBoard(Graphics2D g2d) {
 
         g2d.setColor(Color.gray);
 
@@ -118,10 +129,16 @@ public class GamePanel extends JPanel implements Runnable{
             g2d.drawLine((1 + i) * tileSize, tileSize, (1 + i) * tileSize, MainFrame.HEIGHT - tileSize);
     }
 
-    private void drawPieces(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
+    private void selectTile(Graphics2D g2d) {
+        g2d.setColor(Color.yellow);
+        g2d.setStroke(new BasicStroke(10));
+        g2d.drawRect((selectedTileX + 1)*tileSize, (selectedTileY + 1)*tileSize, tileSize, tileSize);
+    }
 
-        for (Piece piece : board) {
+    // goes through the pieces and draws their image on the tile
+    private void drawPieces(Graphics2D g2d) {
+
+        for (Piece piece : pieces) {
             int imageX = (int) ((1.05 + piece.col) * tileSize);
             int imageY = (int) ((1.05 + piece.row) * tileSize);
             int resizeX = (int) (0.9*tileSize);
@@ -130,16 +147,17 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    private void drawText(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
+    // draws the names of the opponents
+    private void drawText(Graphics2D g2d) {
 
-        g2d.drawString("Bozo", tileSize, tileSize / 2);
-        g2d.drawString("Bozo", tileSize, (1 + BOARDTILES) * tileSize + tileSize / 2);
+        g2d.setFont(new Font("TimesRoman", Font.PLAIN, 24)); 
+        g2d.drawString("GM Bozo", tileSize, (int) (0.7 * tileSize));
+        g2d.drawString("GM Baka", tileSize, (int) ((1.7 + BOARDSIZE) * tileSize));
     }
 
     // spawns a piece
     private void spawn(int row, int col, PType type, PColor player) {
-        board.add(new Piece(row, col, type, player));
+        pieces.add(new Piece(row, col, type, player));
     }
 
     // puts the default pieces on the board
@@ -170,4 +188,32 @@ public class GamePanel extends JPanel implements Runnable{
         spawn(7, 6, PType.horse, PColor.black);
         spawn(7, 7, PType.rook, PColor.black);
     }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // divide by tilesize and remove buffer
+        int clickX = e.getX();
+        int clickY = e.getY();
+
+        int tileX = clickX / tileSize - 1;
+        int tileY = clickY / tileSize - 1;
+
+        selectedTileX = tileX;
+        selectedTileY = tileY;
+
+        // SidePanel.print(clickX + " " + clickY + "\n");
+        SidePanel.print(tileX + " " + tileY + "\n");
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
 }

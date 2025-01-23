@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 
 public class MainFrame extends JFrame{
-
+    
     final static int HEIGHT = 640;
     final static int WIDTH = 1080;
     GamePanel gamePanel;
@@ -23,8 +23,8 @@ public class MainFrame extends JFrame{
 
         // window settings
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(WIDTH, HEIGHT);
-        this.setResizable(false);
+        this.setSize(WIDTH, HEIGHT + 35);
+        this.setResizable(true);
         this.setTitle("Chess Plus");
         this.getContentPane().setBackground(Color.darkGray);
         this.setLayout(new BorderLayout());
@@ -43,7 +43,5 @@ public class MainFrame extends JFrame{
         // initialize the simulation panel
         sidePanel = new SidePanel();
         this.add(sidePanel, BorderLayout.EAST);
-        
-        sidePanel.requestFocus();
     }
 }
