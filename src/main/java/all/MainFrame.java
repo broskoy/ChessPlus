@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 public class MainFrame extends JFrame{
     
-    final static int HEIGHT = 640;
+    final static int HEIGHT = 720;
     final static int WIDTH = 1080;
     GamePanel gamePanel;
     SidePanel sidePanel;

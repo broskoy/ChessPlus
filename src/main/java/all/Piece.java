@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 import all.GamePanel.PColor;
 import all.GamePanel.PType;
 
-public class Piece {
+public abstract class Piece {
 
     int row; 
     int col;
@@ -24,8 +24,17 @@ public class Piece {
         fetchImage();
     }
 
+    protected abstract boolean validMove(int row, int col);
+
+    // if th emove is valid, it moves the piece
+    public void move(int row, int col) {
+        if (validMove(row, col)) {
+            this.row = row;
+            this.col = col;
+        }
+    }
+
     private void fetchImage() {
-        
         try {
             if (color == PColor.white) {
                 image = switch (type) {
@@ -54,15 +63,5 @@ public class Piece {
         }
     }
 
-    private boolean validate_move(int row, int col) {
-        return (row < col);
-    }
-
-    // if th emove is valid, it moves the piece
-    public void move(int row, int col) {
-        if (validate_move(row, col)) {
-            this.row = row;
-            this.col = col;
-        }
-    }
+    
 }

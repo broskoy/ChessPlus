@@ -1,6 +1,5 @@
 package all;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -28,8 +27,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     // allocate a thread to run 
     Thread gameThread;
 
-    int selectedTileX;
-    int selectedTileY;
+    // the variable used to move pieces
+    boolean moveSelected = false;
+    Point moveFrom = new Point();
 
     enum PType {
         king,
@@ -107,7 +107,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         Graphics2D g2d = (Graphics2D) g;
 
         drawBoard(g2d);
-        selectTile(g2d);
+        drawSelectedTile(g2d);
         drawPieces(g2d);
         drawText(g2d);
 
@@ -129,10 +129,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             g2d.drawLine((1 + i) * tileSize, tileSize, (1 + i) * tileSize, MainFrame.HEIGHT - tileSize);
     }
 
-    private void selectTile(Graphics2D g2d) {
-        g2d.setColor(Color.yellow);
-        g2d.setStroke(new BasicStroke(10));
-        g2d.drawRect((selectedTileX + 1)*tileSize, (selectedTileY + 1)*tileSize, tileSize, tileSize);
+    private void drawSelectedTile(Graphics2D g2d) {
+        if (moveSelected) {
+            g2d.setColor(new Color(255, 255, 255, 150));
+            g2d.fillRect((moveFrom.x + 1)*tileSize, (moveFrom.y + 1)*tileSize, tileSize, tileSize);
+        }
     }
 
     // goes through the pieces and draws their image on the tile
@@ -149,7 +150,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     // draws the names of the opponents
     private void drawText(Graphics2D g2d) {
-
+        g2d.setColor(Color.gray);
         g2d.setFont(new Font("TimesRoman", Font.PLAIN, 24)); 
         g2d.drawString("GM Bozo", tileSize, (int) (0.7 * tileSize));
         g2d.drawString("GM Baka", tileSize, (int) ((1.7 + BOARDSIZE) * tileSize));
@@ -157,7 +158,15 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     // spawns a piece
     private void spawn(int row, int col, PType type, PColor player) {
-        pieces.add(new Piece(row, col, type, player));
+        switch(type) {
+            case pawn -> pieces.add(new Pawn(row, col, type, player));
+            case horse -> pieces.add(new Horse(row, col, type, player));
+            case bishop -> pieces.add(new Bishop(row, col, type, player));
+            case rook -> pieces.add(new Rook(row, col, type, player));
+            case queen -> pieces.add(new Queen(row, col, type, player));
+            case king -> pieces.add(new King(row, col, type, player));
+            default -> SidePanel.print("error: spawn got unknown type\n");
+        }
     }
 
     // puts the default pieces on the board
@@ -189,20 +198,80 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         spawn(7, 7, PType.rook, PColor.black);
     }
 
+    private void movePiece(Point from, Point to) {
+        for (Piece piece : pieces) {
+            if (piece.col == from.x && piece.row == from.y) {
+                piece.col = to.x;
+                piece.row = to.y;
+                SidePanel.print(convertNotation(piece.type, from, to) + "\n");
+            }
+        }
+    }
+
+    private String convertNotation(PType type, Point from, Point to) {
+        String returnString = "";
+
+        switch (type) {
+            case pawn -> returnString += "P";
+            case horse -> returnString += "H";
+            case bishop -> returnString += "B";
+            case rook -> returnString += "R";
+            case queen -> returnString += "Q";
+            case king -> returnString += "K";
+            default -> throw new AssertionError();
+        }
+
+        switch (from.x) {
+            case 0 -> returnString += "h";
+            case 1 -> returnString += "g";
+            case 2 -> returnString += "f";
+            case 3 -> returnString += "e";
+            case 4 -> returnString += "d";
+            case 5 -> returnString += "c";
+            case 6 -> returnString += "b";
+            case 7 -> returnString += "a";
+            default -> throw new AssertionError();
+        }
+        returnString += from.y + 1;
+
+        switch (to.x) {
+            case 0 -> returnString += "h";
+            case 1 -> returnString += "g";
+            case 2 -> returnString += "f";
+            case 3 -> returnString += "e";
+            case 4 -> returnString += "d";
+            case 5 -> returnString += "c";
+            case 6 -> returnString += "b";
+            case 7 -> returnString += "a";
+            default -> throw new AssertionError();
+        }
+        returnString += to.y + 1;
+
+        return returnString;
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
-        // divide by tilesize and remove buffer
-        int clickX = e.getX();
-        int clickY = e.getY();
+        // save event while dividing by tilesize and removeing buffer
+        Point click = new Point();
+        click.x = e.getX() / tileSize - 1;
+        click.y = e.getY() / tileSize - 1;
 
-        int tileX = clickX / tileSize - 1;
-        int tileY = clickY / tileSize - 1;
-
-        selectedTileX = tileX;
-        selectedTileY = tileY;
-
-        // SidePanel.print(clickX + " " + clickY + "\n");
-        SidePanel.print(tileX + " " + tileY + "\n");
+        // if the click is on the board
+        if ((0 <= click.x) && (click.x < BOARDSIZE) && (0 <= click.y) && (click.y < BOARDSIZE)) {
+            // if a from has not been selected
+            if (!moveSelected) {
+                moveFrom.x = click.x;
+                moveFrom.y = click.y;
+            } else {
+                // TODO: remove select if pressing the same tile
+                movePiece(moveFrom, click);
+            }
+            // when valid it always flips
+            moveSelected = !moveSelected;
+        } else {
+            moveSelected = false;
+        }
     }
 
     @Override

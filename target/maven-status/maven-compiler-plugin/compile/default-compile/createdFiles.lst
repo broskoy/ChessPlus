@@ -1,6 +1,7 @@
 all\Piece.class
 all\GamePanel$PType.class
 all\MainFrame.class
+all\Point.class
 all\Piece$1.class
 all\GamePanel$PColor.class
 all\MouseInput.class
