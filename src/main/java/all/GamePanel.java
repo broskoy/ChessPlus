@@ -62,7 +62,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         // start the thread
         gameThread = new Thread(this);
-        gameThread.start();  
+        gameThread.start();
     }
 
     @Override
@@ -114,7 +114,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         g2d.dispose();
     }
     
-
     // draws the lines bounding the tiles
     private void drawBoard(Graphics2D g2d) {
 
@@ -156,38 +155,28 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         g2d.drawString("GM Baka", tileSize, (int) ((1.7 + BOARDSIZE) * tileSize));
     }
 
-    // spawns a piece
-    private void spawn(int row, int col, PType type, PColor player) {
-        switch(type) {
-            case pawn -> pieces.add(new Pawn(row, col, type, player));
-            case horse -> pieces.add(new Horse(row, col, type, player));
-            case bishop -> pieces.add(new Bishop(row, col, type, player));
-            case rook -> pieces.add(new Rook(row, col, type, player));
-            case queen -> pieces.add(new Queen(row, col, type, player));
-            case king -> pieces.add(new King(row, col, type, player));
-            default -> SidePanel.print("error: spawn got unknown type\n");
-        }
-    }
-
     // puts the default pieces on the board
     private void spawnDefault() {
         // the white position
         for (int j=0; j<8; j++) 
-            spawn(1, j, PType.pawn, PColor.white);
+            pieces.add(new Pawn(1, j, PType.pawn, PColor.white));
 
+        /*
         spawn(0, 0, PType.rook, PColor.white);
-        spawn(0, 1, PType.horse, PColor.white);
-        spawn(0, 2, PType.bishop, PColor.white);
-        spawn(0, 3, PType.queen, PColor.white);
-        spawn(0, 4, PType.king, PColor.white);
-        spawn(0, 5, PType.bishop, PColor.white);
-        spawn(0, 6, PType.horse, PColor.white);
-        spawn(0, 7, PType.rook, PColor.white);
+        pieces.add(new Horse(0, 1, PType.horse, PColor.white));
+        pieces.add(new Bishop(0, 2, PType.bishop, PColor.white));
+        pieces.add(new Queen(0, 3, PType.queen, PColor.white));
+        pieces.add(new King(0, 4, PType.king, PColor.white));
+        spawn(0, 5, PType.bishop, PColor.white));
+        spawn(0, 6, PType.horse, PColor.white));
+        spawn(0, 7, PType.rook, PColor.white));
+        */
 
         // the black position
         for (int j=0; j<8; j++) 
-            spawn(6, j, PType.pawn, PColor.black);
+            pieces.add(new Pawn(6, j, PType.pawn, PColor.black));
 
+        /*
         spawn(7, 0, PType.rook, PColor.black);
         spawn(7, 1, PType.horse, PColor.black);
         spawn(7, 2, PType.bishop, PColor.black);
@@ -196,6 +185,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         spawn(7, 5, PType.bishop, PColor.black);
         spawn(7, 6, PType.horse, PColor.black);
         spawn(7, 7, PType.rook, PColor.black);
+        */
     }
 
     private void movePiece(Point from, Point to) {

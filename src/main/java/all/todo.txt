@@ -1,7 +1,6 @@
-# make a generic function in piece to check out of bounds
-# add all the pieces as inheritance from piece
 # make an abstract move function that they will adapt
-# make the move list have the move counted wile printing
 # limit movemet to each color alternating add as toggle
+# add captured pieces
 
 # add better images
+# make the move list have the move counted wile printing

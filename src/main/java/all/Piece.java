@@ -14,6 +14,8 @@ public abstract class Piece {
     int col;
     PType type;
     PColor color;
+
+    String imagePath;
     BufferedImage image;
 
     public Piece(int row, int col, PType type, PColor color) {
@@ -24,15 +26,31 @@ public abstract class Piece {
         fetchImage();
     }
 
+    // returns true if the move is on the board
+    protected boolean validBounds(int row, int col) {
+        return ((0 <= row) && (row < GamePanel.BOARDSIZE) && 
+                (0 <= col) && (col < GamePanel.BOARDSIZE));
+    }
+
+    // returns true if the piece can do that move
     protected abstract boolean validMove(int row, int col);
 
-    // if th emove is valid, it moves the piece
+    // if the emove is valid, it moves the piece
     public void move(int row, int col) {
-        if (validMove(row, col)) {
+        if (validBounds(row, col) && validMove(row, col)) {
             this.row = row;
             this.col = col;
         }
     }
+
+    // private void fetchImage() {
+    //     try {
+    //         this.image = ImageIO.read(.class.getResourceAsStream(imagePath));
+    //     } catch (IOException exception) {
+    //         SidePanel.print("error: image fetching\n");
+    //     }
+    // }
+
 
     private void fetchImage() {
         try {
@@ -62,6 +80,5 @@ public abstract class Piece {
             // handle
         }
     }
-
     
 }
