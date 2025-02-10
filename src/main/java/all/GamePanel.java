@@ -191,14 +191,14 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private void movePiece(Point from, Point to) {
         for (Piece piece : pieces) {
             if (piece.col == from.x && piece.row == from.y) {
-                piece.col = to.x;
-                piece.row = to.y;
-                SidePanel.print(convertNotation(piece.type, from, to) + "\n");
+                piece.move(to.y, to.x);
+                SidePanel.print(codeNotation(piece.type, from, to) + "\n");
+                // SidePanel.print(chessNotation(piece.type, from, to) + "\n");
             }
         }
     }
 
-    private String convertNotation(PType type, Point from, Point to) {
+    private String chessNotation(PType type, Point from, Point to) {
         String returnString = "";
 
         switch (type) {
@@ -236,6 +236,26 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             default -> throw new AssertionError();
         }
         returnString += to.y + 1;
+
+        return returnString;
+    }
+
+    private String codeNotation(PType type, Point from, Point to) {
+        String returnString = "";
+
+        switch (type) {
+            case pawn -> returnString += "P";
+            case horse -> returnString += "H";
+            case bishop -> returnString += "B";
+            case rook -> returnString += "R";
+            case queen -> returnString += "Q";
+            case king -> returnString += "K";
+            default -> throw new AssertionError();
+        }
+        returnString += from.x;
+        returnString += from.y;
+        returnString += to.x;
+        returnString += to.y;
 
         return returnString;
     }

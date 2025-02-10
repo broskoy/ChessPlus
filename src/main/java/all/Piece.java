@@ -14,8 +14,6 @@ public abstract class Piece {
     int col;
     PType type;
     PColor color;
-
-    String imagePath;
     BufferedImage image;
 
     public Piece(int row, int col, PType type, PColor color) {
@@ -37,9 +35,12 @@ public abstract class Piece {
 
     // if the emove is valid, it moves the piece
     public void move(int row, int col) {
+        SidePanel.print(validBounds(row, col) + "v" + validMove(row, col));
         if (validBounds(row, col) && validMove(row, col)) {
             this.row = row;
             this.col = col;
+        } else {
+            SidePanel.print(" invalid ");
         }
     }
 
