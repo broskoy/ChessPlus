@@ -3,8 +3,8 @@ package all;
 
 public class Queen extends Piece {
 
-    public Queen(int row, int col, GamePanel.PType type, GamePanel.PColor color) {
-        super(row, col, type, color);
+    public Queen(String color) {
+        // super(row, col, type, color);
     }
 
     @Override

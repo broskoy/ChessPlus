@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -22,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     int tileSize = MainFrame.HEIGHT / (BOARDSIZE + 2);
 
     // where the pieces will be stored
-    ArrayList<Piece> pieces = new ArrayList<>();
+    Piece[][] board = new Piece[BOARDSIZE][BOARDSIZE];
 
     // allocate a thread to run 
     Thread gameThread;
@@ -30,20 +29,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     // the variable used to move pieces
     boolean moveSelected = false;
     Point moveFrom = new Point();
-
-    enum PType {
-        king,
-        pawn,
-        horse,
-        bishop,
-        rook,
-        queen;
-    }
-
-    enum PColor {
-        white,
-        black;
-    }
 
     // constructor
     public GamePanel() {
@@ -138,12 +123,16 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     // goes through the pieces and draws their image on the tile
     private void drawPieces(Graphics2D g2d) {
 
-        for (Piece piece : pieces) {
-            int imageX = (int) ((1.05 + piece.col) * tileSize);
-            int imageY = (int) ((1.05 + piece.row) * tileSize);
-            int resizeX = (int) (0.9*tileSize);
-            int resizeY = (int) (0.9*tileSize);
-            g2d.drawImage(piece.image, imageX, imageY, resizeX, resizeY, null);
+        for (int i=0; i<BOARDSIZE; i++) {
+            for (int j=0; j<BOARDSIZE; j++) {
+                if (board[i][j] != null) {
+                    int imageX = (int) ((1.05 + j) * tileSize);
+                    int imageY = (int) ((1.05 + i) * tileSize);
+                    int resizeX = (int) (0.9*tileSize);
+                    int resizeY = (int) (0.9*tileSize);
+                    g2d.drawImage(board[i][j].image, imageX, imageY, resizeX, resizeY, null);
+                }
+            }
         }
     }
 
@@ -159,22 +148,22 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private void spawnDefault() {
         // the white position
         for (int j=0; j<8; j++) 
-            pieces.add(new Pawn(1, j, PType.pawn, PColor.white));
+            board[1][j] = new Pawn("white");
 
         /*
-        spawn(0, 0, PType.rook, PColor.white);
-        pieces.add(new Horse(0, 1, PType.horse, PColor.white));
-        pieces.add(new Bishop(0, 2, PType.bishop, PColor.white));
-        pieces.add(new Queen(0, 3, PType.queen, PColor.white));
-        pieces.add(new King(0, 4, PType.king, PColor.white));
+        board[0][0] = new Rook(PType.rook, PColor.white);
+        board[0][1] = new Horse(0, 1, PType.horse, PColor.white));
+        board[0][2] = new Bishop(0, 2, PType.bishop, PColor.white));
+        board[0][3] = new Queen(0, 3, PType.queen, PColor.white));
+        board[0][4] = new King(0, 4, PType.king, PColor.white));
         spawn(0, 5, PType.bishop, PColor.white));
         spawn(0, 6, PType.horse, PColor.white));
         spawn(0, 7, PType.rook, PColor.white));
         */
 
         // the black position
-        for (int j=0; j<8; j++) 
-            pieces.add(new Pawn(6, j, PType.pawn, PColor.black));
+        for (int x=0; x<8; x++) 
+            board[6][x] = new Pawn("black");
 
         /*
         spawn(7, 0, PType.rook, PColor.black);
@@ -189,25 +178,30 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     private void movePiece(Point from, Point to) {
-        for (Piece piece : pieces) {
-            if (piece.col == from.x && piece.row == from.y) {
-                piece.move(to.y, to.x);
-                SidePanel.print(codeNotation(piece.type, from, to) + "\n");
-                // SidePanel.print(chessNotation(piece.type, from, to) + "\n");
-            }
-        }
+        Piece piece = board[from.y][from.x];
+
+        // SidePanel.print(codeNotation(PType.pawn, from, to) + "\n");
+
+        if (board[from.y][from.x] == null)
+            throw new IllegalArgumentException("No piece at source position.");
+
+        board[to.y][to.x] = piece;
+        board[from.y][from.x] = null;
+        
+        SidePanel.print(codeNotation(board[to.y][to.x].type, from, to) + "\n");
+        // SidePanel.print(chessNotation(piece.type, from, to) + "\n");    
     }
 
-    private String chessNotation(PType type, Point from, Point to) {
+    private String chessNotation(String type, Point from, Point to) {
         String returnString = "";
 
         switch (type) {
-            case pawn -> returnString += "P";
-            case horse -> returnString += "H";
-            case bishop -> returnString += "B";
-            case rook -> returnString += "R";
-            case queen -> returnString += "Q";
-            case king -> returnString += "K";
+            case "pawn" -> returnString += "P";
+            case "horse" -> returnString += "H";
+            case "bishop" -> returnString += "B";
+            case "rook" -> returnString += "R";
+            case "queen" -> returnString += "Q";
+            case "king" -> returnString += "K";
             default -> throw new AssertionError();
         }
 
@@ -240,16 +234,16 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         return returnString;
     }
 
-    private String codeNotation(PType type, Point from, Point to) {
+    private String codeNotation(String type, Point from, Point to) {
         String returnString = "";
 
         switch (type) {
-            case pawn -> returnString += "P";
-            case horse -> returnString += "H";
-            case bishop -> returnString += "B";
-            case rook -> returnString += "R";
-            case queen -> returnString += "Q";
-            case king -> returnString += "K";
+            case "pawn" -> returnString += "P";
+            case "horse" -> returnString += "H";
+            case "bishop" -> returnString += "B";
+            case "rook" -> returnString += "R";
+            case "queen" -> returnString += "Q";
+            case "king" -> returnString += "K";
             default -> throw new AssertionError();
         }
         returnString += from.x;

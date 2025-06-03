@@ -14,7 +14,7 @@ public class MainFrame extends JFrame{
     SidePanel sidePanel;
 
     public static void main(String[] args) {
-        new MainFrame();
+       new MainFrame();
     }
 
     public MainFrame() {

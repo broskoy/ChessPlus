@@ -1,10 +1,26 @@
 package all;
 
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public class Bishop extends Piece {
 
-    public Bishop(int row, int col, GamePanel.PType type, GamePanel.PColor color) {
-        super(row, col, type, color);
+    public Bishop(String color) {
+        this.type = "bishop";
+        this.color = color;
+        fetchImage();
+    }
+
+    private void fetchImage() {
+        try {
+            if (color == "white")
+                image = ImageIO.read(Piece.class.getResourceAsStream("/bishop_white.jpg"));
+            else image = ImageIO.read(Piece.class.getResourceAsStream("/bishop_black.jpg"));
+            
+        } catch (IOException exception){
+            // handle
+        }
     }
 
     @Override
