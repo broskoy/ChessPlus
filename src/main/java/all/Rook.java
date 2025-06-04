@@ -3,8 +3,10 @@ package all;
 
 public class Rook extends Piece {
 
-    public Rook(String color) {
-        // super(row, col, type, color);
+    public Rook(String newColor) {
+        type = "rook";
+        color = newColor;
+        fetchImage();
     }
 
     @Override

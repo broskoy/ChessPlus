@@ -1,6 +1,9 @@
 package all;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 public abstract class Piece {
 
@@ -12,6 +15,16 @@ public abstract class Piece {
     protected boolean validBounds(int row, int col) {
         return ((0 <= row) && (row < GamePanel.BOARDSIZE) && 
                 (0 <= col) && (col < GamePanel.BOARDSIZE));
+    }
+
+    protected void fetchImage() {
+        try {
+            String path = "/" + type + "_" + color + ".jpg";
+            image = ImageIO.read(Piece.class.getResourceAsStream(path));
+            
+        } catch (IOException exception){
+            // handle
+        }
     }
 
     // returns true if the piece can do that move

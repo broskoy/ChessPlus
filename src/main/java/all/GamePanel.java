@@ -150,31 +150,28 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         for (int j=0; j<8; j++) 
             board[1][j] = new Pawn("white");
 
-        /*
-        board[0][0] = new Rook(PType.rook, PColor.white);
-        board[0][1] = new Horse(0, 1, PType.horse, PColor.white));
-        board[0][2] = new Bishop(0, 2, PType.bishop, PColor.white));
-        board[0][3] = new Queen(0, 3, PType.queen, PColor.white));
-        board[0][4] = new King(0, 4, PType.king, PColor.white));
-        spawn(0, 5, PType.bishop, PColor.white));
-        spawn(0, 6, PType.horse, PColor.white));
-        spawn(0, 7, PType.rook, PColor.white));
-        */
+        board[0][0] = new Rook("white");
+        board[0][1] = new Horse("white");
+        board[0][2] = new Bishop("white");
+        board[0][3] = new Queen("white");
+        board[0][4] = new King("white");
+        board[0][5] = new Bishop("white");
+        board[0][6] = new Horse("white");
+        board[0][7] = new Rook("white");
+
 
         // the black position
-        for (int x=0; x<8; x++) 
-            board[6][x] = new Pawn("black");
+        for (int j=0; j<8; j++) 
+            board[6][j] = new Pawn("black");
 
-        /*
-        spawn(7, 0, PType.rook, PColor.black);
-        spawn(7, 1, PType.horse, PColor.black);
-        spawn(7, 2, PType.bishop, PColor.black);
-        spawn(7, 3, PType.queen, PColor.black);
-        spawn(7, 4, PType.king, PColor.black);
-        spawn(7, 5, PType.bishop, PColor.black);
-        spawn(7, 6, PType.horse, PColor.black);
-        spawn(7, 7, PType.rook, PColor.black);
-        */
+        board[7][0] = new Rook("black");
+        board[7][1] = new Horse("black");
+        board[7][2] = new Bishop("black");
+        board[7][3] = new Queen("black");
+        board[7][4] = new King("black");
+        board[7][5] = new Bishop("black");
+        board[7][6] = new Horse("black");
+        board[7][7] = new Rook("black");
     }
 
     private void movePiece(Point from, Point to) {
@@ -192,6 +189,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         // SidePanel.print(chessNotation(piece.type, from, to) + "\n");    
     }
 
+    @SuppressWarnings("unused")
     private String chessNotation(String type, Point from, Point to) {
         String returnString = "";
 

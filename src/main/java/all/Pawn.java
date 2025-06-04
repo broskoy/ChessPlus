@@ -1,26 +1,11 @@
 package all;
 
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 public class Pawn extends Piece {
 
-    public Pawn(String color) {
-        this.type = "pawn";
-        this.color = color;
+    public Pawn(String newColor) {
+        type = "pawn";
+        color = newColor;
         fetchImage();
-    }
-
-    private void fetchImage() {
-        try {
-            if (color == "white")
-                image = ImageIO.read(Piece.class.getResourceAsStream("/pawn_white.jpg"));
-            else image = ImageIO.read(Piece.class.getResourceAsStream("/pawn_black.jpg"));
-            
-        } catch (IOException exception){
-            // handle
-        }
     }
 
     @Override

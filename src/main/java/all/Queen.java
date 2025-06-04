@@ -3,8 +3,10 @@ package all;
 
 public class Queen extends Piece {
 
-    public Queen(String color) {
-        // super(row, col, type, color);
+    public Queen(String newColor) {
+        type = "queen";
+        color = newColor;
+        fetchImage();
     }
 
     @Override

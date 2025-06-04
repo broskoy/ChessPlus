@@ -3,8 +3,10 @@ package all;
 
 public class Horse extends Piece {
 
-    public Horse(String color) {
-        // super(row, col, type, color);
+    public Horse(String newColor) {
+        type = "horse";
+        color = newColor;
+        fetchImage();
     }
 
     @Override

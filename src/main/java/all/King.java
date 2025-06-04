@@ -3,8 +3,10 @@ package all;
 
 public class King extends Piece {
 
-    public King(String color) {
-        // super(row, col, type, color);
+    public King(String newColor) {
+        type = "king";
+        color = newColor;
+        fetchImage();
     }
 
     @Override
