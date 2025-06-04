@@ -1,7 +1,8 @@
 # make an abstract move function that they will adapt
 # limit movemet to each color alternating add as toggle
 # add captured pieces
-# make class spot for table coordinates instead of using point
+# add reviving pieces (NecronChess)
 
 # add better images
 # make the move list have the move counted wile printing
+# add a clock
